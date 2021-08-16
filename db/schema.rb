@@ -18,8 +18,10 @@ ActiveRecord::Schema.define(version: 2021_08_12_234010) do
   create_table "listings", force: :cascade do |t|
     t.bigint "movie_id", null: false
     t.bigint "list_id", null: false
+    t.bigint "creator_id", null: false
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
+    t.index ["creator_id"], name: "index_listings_on_creator_id"
     t.index ["list_id"], name: "index_listings_on_list_id"
     t.index ["movie_id", "list_id"], name: "index_listings_on_movie_id_and_list_id", unique: true
     t.index ["movie_id"], name: "index_listings_on_movie_id"
@@ -57,5 +59,6 @@ ActiveRecord::Schema.define(version: 2021_08_12_234010) do
 
   add_foreign_key "listings", "lists"
   add_foreign_key "listings", "movies"
+  add_foreign_key "listings", "users", column: "creator_id"
   add_foreign_key "lists", "users", column: "owner_id"
 end

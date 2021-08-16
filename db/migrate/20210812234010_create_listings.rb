@@ -3,6 +3,7 @@ class CreateListings < ActiveRecord::Migration[6.1]
     create_table :listings do |t|
       t.references :movie, null: false, foreign_key: true
       t.references :list, null: false, foreign_key: true
+      t.references :creator, null: false, foreign_key: {to_table: :users}
 
       t.timestamps
     end

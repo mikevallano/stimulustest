@@ -45,6 +45,10 @@ end
 ## Listings
 movie_ids = Movie.all.pluck(:id)
 List.all.each do |list|
-  list.update(movie_ids: movie_ids.shift(5))
+  owner_id = list.owner_id
+  list_id = list.id
+  movie_ids.shift(5).each do |movie_id|
+    Listing.create!(movie_id: movie_id, list_id: list_id, creator_id: owner_id)
+  end
   puts "list (#{list.name}) movie_ids: #{list.movie_ids} #{'*' * 10}"
 end
