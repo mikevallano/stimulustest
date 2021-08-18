@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2021_08_12_234010) do
+ActiveRecord::Schema.define(version: 2021_08_17_232231) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -34,6 +34,16 @@ ActiveRecord::Schema.define(version: 2021_08_12_234010) do
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
     t.index ["owner_id"], name: "index_lists_on_owner_id"
+  end
+
+  create_table "memberships", force: :cascade do |t|
+    t.bigint "list_id", null: false
+    t.bigint "member_id", null: false
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
+    t.index ["list_id", "member_id"], name: "index_memberships_on_list_id_and_member_id", unique: true
+    t.index ["list_id"], name: "index_memberships_on_list_id"
+    t.index ["member_id"], name: "index_memberships_on_member_id"
   end
 
   create_table "movies", force: :cascade do |t|
@@ -61,4 +71,6 @@ ActiveRecord::Schema.define(version: 2021_08_12_234010) do
   add_foreign_key "listings", "movies"
   add_foreign_key "listings", "users", column: "creator_id"
   add_foreign_key "lists", "users", column: "owner_id"
+  add_foreign_key "memberships", "lists"
+  add_foreign_key "memberships", "users", column: "member_id"
 end

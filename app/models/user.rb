@@ -5,4 +5,13 @@ class User < ApplicationRecord
          :recoverable, :rememberable, :validatable
 
   has_many :owned_lists, class_name: 'List', foreign_key: :owner_id
+  has_many :memberships, foreign_key: :member_id
+  has_many :member_lists, through: :memberships, source: :list
+
+  def lists
+    List
+      .left_joins(:memberships)
+      .where(lists: {owner: self})
+      .or(Membership.where(member: self)).distinct
+  end
 end

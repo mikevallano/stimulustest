@@ -1,4 +1,6 @@
 
+# run with `rails db:seed:replant` to avoid recreating the db
+
 ## Users
 mike = User.find_by(email: 'mike@example.com')
 mike = User.create(
@@ -51,4 +53,11 @@ List.all.each do |list|
     Listing.create!(movie_id: movie_id, list_id: list_id, creator_id: owner_id)
   end
   puts "list (#{list.name}) movie_ids: #{list.movie_ids} #{'*' * 10}"
+end
+
+## Memberships
+List.where(owner: mike).each do |list|
+  list.update(members: User.where.not(id: mike).sample(3).uniq)
+
+  puts "list #{list.name} has member_ids: #{list.member_ids} #{'*' * 100}"
 end
