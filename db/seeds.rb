@@ -23,8 +23,8 @@ mike = User.create(
 end
 
 ## Movies
-200.times do
-  movie = Movie.create!(title: Faker::Movie.title)
+100.times do
+  movie = Movie.create!(title: Faker::Movie.unique.title)
   puts "created movie: #{movie.title} #{'*' * 10}"
 end
 
@@ -59,5 +59,5 @@ end
 List.where(owner: mike).each do |list|
   list.update(members: User.where.not(id: mike).sample(3).uniq)
 
-  puts "list #{list.name} has member_ids: #{list.member_ids} #{'*' * 100}"
+  puts "list #{list.name} has member_ids: #{list.member_ids} #{'*' * 10}"
 end
