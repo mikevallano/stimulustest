@@ -14,10 +14,10 @@
       <% if current_user %>
         <%= link_to 'Sign out', destroy_user_session_path, method: :delete, class: 'nav-item nav-link' %>
         <%= link_to 'My account', edit_user_registration_path, class: 'nav-item nav-link' %>
+        <%= link_to 'Lists', lists_path, class: 'nav-item nav-link' %>
       <% else %>
         <%= link_to 'Sign in', new_user_session_path, class: 'nav-item nav-link' %>
       <% end %>
-      <%= link_to 'About', about_path, class: 'nav-item nav-link' %>
     </div>
   </div>
 </nav>

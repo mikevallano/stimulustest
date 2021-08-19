@@ -14,4 +14,8 @@ class User < ApplicationRecord
       .where(lists: {owner: self})
       .or(Membership.where(member: self)).distinct
   end
+
+  def movies
+    Movie.joins(:listings).where(listings: {list: self.lists})
+  end
 end
