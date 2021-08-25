@@ -16,6 +16,6 @@ class User < ApplicationRecord
   end
 
   def movies
-    Movie.joins(:listings).where(listings: {list: self.lists})
+    Movie.joins(:listings).where(listings: {list: self.lists}).distinct
   end
 end
