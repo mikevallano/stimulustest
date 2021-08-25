@@ -7,4 +7,10 @@ class List < ApplicationRecord
   has_many :movies, through: :listings
   has_many :memberships
   has_many :members, through: :memberships, class_name: 'User'
+
+  scope :for_user, -> (user) do
+    left_joins(:memberships)
+    .where(lists: {owner: user})
+    .or(Membership.where(member: user)).distinct
+  end
 end

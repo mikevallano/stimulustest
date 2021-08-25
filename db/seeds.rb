@@ -1,5 +1,7 @@
 
 # run with `rails db:seed:replant` to avoid recreating the db
+# or to start with the ids back at 1
+# rails db:drop && rails db:create && rails db:migrate && rails db:seed
 
 ## Users
 mike = User.find_by(email: 'mike@example.com')
@@ -45,14 +47,24 @@ owner_ids = User.where.not(id: mike.id).pluck(:id)
 end
 
 ## Listings
-movie_ids = Movie.all.pluck(:id)
-List.all.each do |list|
-  owner_id = list.owner_id
-  list_id = list.id
-  movie_ids.shift(5).each do |movie_id|
-    Listing.create!(movie_id: movie_id, list_id: list_id, creator_id: owner_id)
+# Ensure some movies are on no lists, and others are on multiple across users
+movie_ids = Movie.all.pluck(:id).sample(80)
+mike_movie_ids = movie_ids.dup
+mike_lists = List.where(owner: mike).to_a
+
+mike_movie_ids.shift(rand(3..10)).each do |movie_id|
+  mike_lists.sample(rand(1..3)).each do |list|
+    listing = Listing.create!(movie_id: movie_id, list: list, creator: mike)
+    puts "listing created. movie_id: #{listing.movie_id}, list_id: #{listing.list_id} #{'*' * 10}"
   end
-  puts "list (#{list.name}) movie_ids: #{list.movie_ids} #{'*' * 10}"
+end
+
+non_mike_lists = List.where.not(owner: mike).to_a
+movie_ids.shift(rand(3..10)).each do |movie_id|
+  non_mike_lists.sample(3).uniq.each do |list|
+    listing = Listing.create!(movie_id: movie_id, list: list, creator: list.owner)
+    puts "listing created. movie_id: #{listing.movie_id}, list_id: #{listing.list_id} #{'*' * 10}"
+  end
 end
 
 ## Memberships

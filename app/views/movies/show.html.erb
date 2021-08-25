@@ -1,0 +1,26 @@
+<h1>Movies#show</h1>
+
+<p id="notice"><%= notice %></p>
+
+<p>
+  <strong>Title:</strong>
+  <%= @movie.title %>
+</p>
+
+<h4>Lists</h4>
+<table>
+  <thead>
+    <tr>
+      <th>Title</th>
+      <th colspan="3"></th>
+    </tr>
+  </thead>
+
+  <tbody>
+    <% @movie.lists.for_user(current_user).each do |list| %>
+      <tr>
+        <td><%= list.name %></td>
+      </tr>
+    <% end %>
+  </tbody>
+</table>
