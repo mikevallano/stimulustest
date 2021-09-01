@@ -1,3 +1,9 @@
 
 <h1>Yay!</h1>
 <p>Find me in app/views/pages/home.html.erb</p>
+
+<h2 id='subhead'>Hola</h2>
+
+<%= content_tag :div, nil, data: {controller: "hello", action: "click->hello#tweak"} do %>
+  <div class="btn btn-primary">Say Hello</div>
+<% end %>
